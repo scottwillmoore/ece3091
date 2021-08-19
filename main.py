@@ -47,3 +47,26 @@ def set_motor(name, speed, direction):
 #     time.sleep(5.0)
 #     print("Counter:", encoder.steps, "Speed:", (encoder.steps - pre_steps) / 5.0, "steps per second\n")
 #     pre_steps = encoder.steps
+
+
+#defining sensors
+frontSensor = DistanceSensor(echo=38, trigger=13, max_distance=1, threshold_distance=0.1)
+backSensor = DistanceSensor(echo=40, trigger=15, max_distance=1)
+leftSensor = DistanceSensor(echo=32, trigger=7, max_distance=1)
+rightSensor = DistanceSensor(echo=36, trigger=11, max_distance=1, threshold_distance=0.1)
+
+
+def senseFront():
+    frontSensor.when_in_range = senseSides()
+
+def senseBack():
+    backSensor.when_in_range = senseSides()
+
+def senseSides():
+    #stop motion
+    if leftSensor.distance<0.1
+        #turn right
+    elif rightSensor.distance<0.1
+        #turn left
+    else
+        #turn right
