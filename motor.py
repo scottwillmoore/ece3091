@@ -7,22 +7,22 @@ from time import sleep
 LEFT_MOTOR_PHASE_PIN = 31
 LEFT_MOTOR_ENABLE_PIN = 33
 
-leftMotor = PhaseEnableMotor(LEFT_MOTOR_PHASE_PIN, LEFT_MOTOR_PHASE_PIN)
+leftMotor = PhaseEnableMotor(phase=LEFT_MOTOR_PHASE_PIN, enable=LEFT_MOTOR_ENABLE_PIN)
 
 RIGHT_MOTOR_PHASE_PIN = 37
 RIGHT_MOTOR_ENABLE_PIN = 35
 
-rightMotor = PhaseEnableMotor(RIGHT_MOTOR_PHASE_PIN, RIGHT_MOTOR_PHASE_PIN)
+rightMotor = PhaseEnableMotor(phase=RIGHT_MOTOR_PHASE_PIN, enable=RIGHT_MOTOR_ENABLE_PIN)
 
 LEFT_ENCODER_A_PIN = 16
 LEFT_ENCODER_B_PIN = 18
 
-leftEncoder = RotaryEncoder(LEFT_ENCODER_A_PIN, LEFT_ENCODER_B_PIN)
+leftEncoder = RotaryEncoder(a=LEFT_ENCODER_A_PIN, b=LEFT_ENCODER_B_PIN)
 
 RIGHT_ENCODER_A_PIN = 22
 RIGHT_ENCODER_B_PIN = 28
 
-rightEncoder = RotaryEncoder(RIGHT_ENCODER_A_PIN, RIGHT_ENCODER_B_PIN)
+rightEncoder = RotaryEncoder(a=RIGHT_ENCODER_A_PIN, b=RIGHT_ENCODER_B_PIN)
 
 while True:
     leftMotor.forward(1)
