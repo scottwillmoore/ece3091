@@ -7,95 +7,72 @@ import csv
 import os
 
 
-# need to download torch from pytorch website
-# pip install cv2
+# No ball bearing
+# 221-308 inclusive
+# 341 - 368 inclusive
 
+WIDTH = 512
+HEIGHT = 384
 
-from IPython import display
-#vid_1_images
-# plt.show() the image
-# hover cursor over centre of ball bearing, look at numbers on bottom of screen
-# write numbers down
+with open("Ball Bearing Position Data.csv", 'r') as csvfile:
+    csvreader = csv.reader(csvfile,delimiter=',')
+    lineCount = 0
 
-# example for above
+    ballBearingPositions = []
 
-# import this as a csv file, read function
-N = 5
-Y = np.random.randint(5,59,size=(N,2)) # block positions
-print(Y)
-print(type(Y))
-ballBearingPositions = []
-ballBearingPositions.append([350,387]) #1
-ballBearingPositions.append([447,406]) #2
-ballBearingPositions.append([437,364]) #3
-ballBearingPositions.append([435,306]) #4
-ballBearingPositions.append([29,514]) #5
+    for row in csvreader:
+        if (lineCount < 221) or (308 < lineCount < 341) or (368 < lineCount < 600):
+            xint = float(row[1])
+            yint = float(row[2])
+            ballBearingPositions.append([xint,yint])
+        lineCount = lineCount + 1
+
 ballArray = np.array(ballBearingPositions)
-ballArray.reshape((5,2))
-print(ballArray)
-
-
-## Generate some data
-image1 = cv2.imread('vid 1/im_0427.png')
-image2 = cv2.imread('vid 1/im_0462.png')
-image3 = cv2.imread('vid 1/im_0533.png')
-image4 = cv2.imread('vid 1/im_0572.png')
-image5 = cv2.imread('vid 1/im_0791.png')
-
-#showing the image
-plt.imshow(image1)
-plt.plot(350,387,'bo')
-plt.show
-plt.imshow(image2)
-plt.plot(447,406,'bo')
-plt.imshow(image3)
-plt.plot(437,364,'bo')
-plt.imshow(image4)
-plt.plot(435,306,'bo')
-plt.imshow(image5)
-plt.plot(29,514,'bo')
-
-
-
-imageSetTrain = []
-# Load in the images automatically
-"""for filepath in os.listdir('vid 1/'):
-    imageSetTrain.append(cv2.imread('vid 1/{0}'.format(filepath),1))
-"""
-
-# manual testing
-imageSetTrain.append(image1)
-imageSetTrain.append(image2)
-imageSetTrain.append(image3)
-imageSetTrain.append(image4)
-imageSetTrain.append(image5)
-
-imagesTrain = np.array(imageSetTrain)
-Xtrain = imagesTrain # i have left as two variables to reduce confusion even if adds redundancy
-
-imageSetTest = []
-# Load in the images
-"""for filepath in os.listdir('vid 2/'):
-    imageSetTest.append(cv2.imread('vid 2/{0}'.format(filepath),1))
-"""
-imageSetTest.append(image1)
-imageSetTest.append(image2)
-imageSetTest.append(image3)
-imageSetTest.append(image4)
-imageSetTest.append(image5)
-
-imagesTest = np.array(imageSetTest)
-
-Xtrain = imagesTrain
-Xtest = imagesTest
-
+ballArray.reshape((len(ballBearingPositions),2))
 Ytrain = ballArray
 
-# get list of files.
-# for filename
-# glob
+# This section of code can be used to check if the ball bearing pointer is in the correct location
+"""count = 0
+from IPython import display
+for filepath in os.listdir('vid 1/'):
+    if count % 3 == 0:
+        image = cv2.imread('vid 1/{0}'.format(filepath),1)
+        imageResized = cv2.resize(image,(WIDTH,HEIGHT))
+        plt.imshow(imageResized)
+        plt.plot(ballBearingPositions[count][0],ballBearingPositions[count][1],'bo')
+        plt.show()
+    count = count + 1
+"""
 
-# we have made no changes to michael's code from this point
+# Load in the train images automatically
+imageSetTrain = []
+counterTrain = 0
+for filepath in os.listdir('vid 1/'):
+    if (counterTrain < 221) or (308 < counterTrain < 341) or (368 < counterTrain < 600):
+        image = cv2.imread('vid 1/{0}'.format(filepath),1)
+        imageResized = cv2.resize(image,(WIDTH,HEIGHT))
+        imageSetTrain.append(imageResized)
+    counterTrain = counterTrain + 1
+
+imagesTrain = np.array(imageSetTrain)
+Xtrain = imagesTrain
+print(Xtrain.shape)
+
+# load in the test images automatically
+# no ball bearing 726-927
+imageSetTest = []
+counterTest = 0
+for filepath in os.listdir('vid 1/'):
+    if (599 < counterTest < 726) or (927 < counterTest < 1286):
+        image = cv2.imread('vid 1/{0}'.format(filepath), 1)
+        imageResized = cv2.resize(image, (WIDTH, HEIGHT))
+        imageSetTest.append(imageResized)
+    counterTest = counterTest + 1
+
+imagesTest = np.array(imageSetTest)
+Xtest = imagesTest
+print(Xtest.shape)
+print(Ytrain.shape)
 
 # Define a simple CNN
 class Flatten(nn.Module):
@@ -116,7 +93,7 @@ class Detector(nn.Module):
             nn.Conv2d(3, 3, 3, stride=2, padding=1),
             nn.ReLU(),
             Flatten(),
-            nn.Linear(192, 128),
+            nn.Linear(9216, 128), # The first number here changes based on the size. Use the errors when it runs to pick the number
             nn.ReLU(),
             nn.Linear(128, output_dim),
             nn.Tanh()
@@ -149,8 +126,11 @@ for j in range(Nepochs):
     for k in range(int(Xtrain.shape[0] / Nbatch)):
         # Scale images and positions to be between 0 and 1 and convert to tensors for pytorch
         Xbatch = torch.from_numpy(Xtrain[Nbatch * k:Nbatch * (k + 1), :, :, :]).float().transpose(1, 3) / 255
-        Ybatch = torch.from_numpy(Ytrain[Nbatch * k:Nbatch * (k + 1), :]).float() / 64 - 0.5
-
+        Ybatch = torch.from_numpy(Ytrain[Nbatch * k:Nbatch * (k + 1), :]).float()
+        # The following code normalises the size of the image to be between 0-1
+        size = np.array([[1 / HEIGHT, 1 / WIDTH]])
+        size = torch.from_numpy(size).float()
+        Ybatch = (Ybatch * size) - 0.5
         # Predict positions using neural network
         Ypred = network(Xbatch)
 
@@ -174,23 +154,21 @@ for j in range(Nepochs):
     plt.xlabel('Epochs')
     plt.grid()
 
-    display.clear_output(wait=True)
-    display.display(plt.gcf())
-
 plt.show()
 
 # testing the model - code not yet tested
 k = np.random.randint(Xtest.shape[0] / Nbatch)
 test_ims = torch.from_numpy(Xtest[Nbatch * k:Nbatch * (k + 1), :, :, :]).float().transpose(1, 3) / 255
 Ypred = network(test_ims).detach().numpy()
+print(Ypred)
 
 plt.figure(figsize=(15, 5))
 for j in range(Nbatch):
-    plt.subplot(1, Nbatch, j + 1)
-    plt.imshow(Xtest[Nbatch * k + j, :, :, :].squeeze(), extent=[0, 64, 64, 0])
-
-    pos_pred = (Ypred + 0.5) * 64  # Scale predictions to pixel coordinates
-
+    plt.subplot(2, 4, j + 1)
+    plt.imshow(Xtest[Nbatch * k + j, :, :, :].squeeze(), extent=[0, WIDTH, HEIGHT, 0])
+    size = np.array([HEIGHT, WIDTH])
+    pos_pred = (Ypred + 0.5) * size  # Scale predictions to pixel coordinates
+    print(pos_pred)
     # Show predicted marker positions in image
     plt.plot([pos_pred[j, 0]], [pos_pred[j, 1]], 'bo', markersize=5)
 plt.show()
