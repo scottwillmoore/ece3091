@@ -1,3 +1,5 @@
+# https://picamera.readthedocs.io/en/release-1.0/api.html
+
 # Steps:
 
 # 1) Plug in the camera
