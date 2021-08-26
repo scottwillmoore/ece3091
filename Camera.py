@@ -41,7 +41,7 @@ camera.stop_recording
 # Open rasbperry pi terminal
 # type "omxplayer"
 # type "cd Desktop"
-# type omxplayer my_video.h264 and hit enter 
+# type "omxplayer my_video.h264" and hit enter 
 # The video should pop up on the screen
 
 
