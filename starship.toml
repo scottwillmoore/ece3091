@@ -1,0 +1,64 @@
+add_newline = false
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$conda\
+$package\
+
+$python\
+
+$cmd_duration\
+$line_break\
+$character"""
+
+[character]
+error_symbol = '[\$](bold red)'
+success_symbol = '[\$](bold green)'
+
+[cmd_duration]
+style = 'bold blue'
+
+[conda]
+ignore_base = false
+symbol = 'conda '
+
+[directory]
+read_only = '*'
+read_only_style = 'bold red'
+style = 'bold cyan'
+truncation_length = 3
+truncation_symbol = '...'
+
+[git_branch]
+style = 'bold purple'
+symbol = ''
+
+[git_commit]
+commit_hash_length = 8
+format = '[\(($tag, )$hash\)]($style) '
+style = 'bold green'
+tag_disabled = false
+tag_symbol = ''
+
+[git_state]
+format = '[\($state ($progress_current of $progress_total)\)]($style) '
+
+[hostname]
+style = 'bold red'
+
+[package]
+style = 'bold yellow'
+symbol = ''
+
+[python]
+symbol = 'python '
+
+[username]
+format = '[$user]($style) on '
+show_always = true
+style_user = 'bold blue'
