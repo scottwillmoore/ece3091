@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains our code and documentation for [engineering design](https://handbook.monash.edu/2021/units/ECE3091). The aim is to design and build an autonomous robot that can identify and collect ball bearings of a known size and appearance. Please see the [project description](project_description.pdf) for more information.
+This repository contains our code and documentation for [engineering design](https://handbook.monash.edu/2021/units/ECE3091). The aim is to design and build an autonomous robot that can identify and collect ball bearings of a known size and appearance. Please see the [project description](documents/project_description.pdf) for more information.
 
 ## Setup
 
