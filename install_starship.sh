@@ -1,5 +1,5 @@
 pushd ~
-curl -L -O https://starship.rs/install.sh
+curl -L https://starship.rs/install.sh -o Starship-$(uname)-$(uname -m).sh
 mkdir -p ./bin
-sh ~/install.sh -y -b ./bin
+sh ~/Starship-$(uname)-$(uname -m).sh -y -b ./bin
 popd

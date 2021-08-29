@@ -1,6 +1,7 @@
-if $- != *i*; then
-    return
-fi
+case $- in
+    *i*) ;;
+    *) return ;; 
+esac
 
 if command -v dircolors &> /dev/null; then
     eval "$(dircolors)"
