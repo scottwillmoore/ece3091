@@ -16,6 +16,7 @@ alias ls="ls --color=auto"
 alias sudo="sudo "
 
 export EDITOR=vim
+export GPIOZERO_PIN_FACTORY=lgpio
 export PATH="$HOME/bin:$PATH"
 export PS1="\w \$ "
 
