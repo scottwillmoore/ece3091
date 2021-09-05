@@ -1,0 +1,16 @@
+obstacles = []
+while (True): # or some other condition
+    frontMeasurement = [x, y + frontSensor.distance]
+    backMeasurement = [x,y - backSensor.distance]
+    leftMeasurement = [x - leftSensor.distance, y]
+    rightMeasurement = [x + rightSensor.distance,y]
+    measurements = [leftMeasurement,rightMeasurement,backMeasurement,frontMeasurement]
+    match = [0,0,0,0]
+    for i in obstacles: # this checks for duplicates to save data space (though increases processing time)
+        for j in measurements:
+            if i == measurements[j]:
+                match[j] = 1
+    for j in match:
+        if match[j] == 0:
+            obstacles.append(measurements[j])
+    sleep(0.01) # change depending on desired measurement interval
