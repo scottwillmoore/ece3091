@@ -1,26 +1,36 @@
 case $- in
-    *i*) ;;
-    *) return ;; 
+	*i*) ;;
+	*) return ;; 
 esac
 
+if [ -d "$HOME/.bin" ]; then
+	export PATH="$HOME/.bin:$PATH"
+fi
+
 if command -v dircolors &> /dev/null; then
-    eval "$(dircolors)"
+	eval "$(dircolors)"
+fi
+
+if pgrep pigpiod &> /dev/null; then
+	export GPIOZERO_PIN_FACTORY=pigpio
 fi
 
 if command -v starship &> /dev/null; then
-    eval "$(starship init bash)"
+	eval "$(starship init bash)"
+else
+	export PS1="\w \$ "
+fi
+
+if command -v vim &> /dev/null; then
+	export EDITOR=vim
 fi
 
 alias grep="grep --color=auto"
 alias ls="ls --color=auto"
 alias sudo="sudo "
 
-export EDITOR=vim
-export GPIOZERO_PIN_FACTORY=lgpio
-export PATH="$HOME/bin:$PATH"
-export PS1="\w \$ "
-
 shopt -s autocd
 shopt -s cdspell
 shopt -s globstar
 shopt -s histappend
+
