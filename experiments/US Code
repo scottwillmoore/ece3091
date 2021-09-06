@@ -1,9 +1,9 @@
 obstacles = []
 while (True): # or some other condition
-    frontMeasurement = [x, y + frontSensor.distance]
-    backMeasurement = [x,y - backSensor.distance]
-    leftMeasurement = [x - leftSensor.distance, y]
-    rightMeasurement = [x + rightSensor.distance,y]
+    frontMeasurement = [x, y + frontSensor.distance * np.sin(th)]
+    backMeasurement = [x,y - backSensor.distance * np.sin(th)]
+    leftMeasurement = [x - leftSensor.distance * np.sin(th), y]
+    rightMeasurement = [x + rightSensor.distance * np.sin(th),y]
     measurements = [leftMeasurement,rightMeasurement,backMeasurement,frontMeasurement]
     match = [0,0,0,0]
     for i in obstacles: # this checks for duplicates to save data space (though increases processing time)
