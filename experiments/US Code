@@ -1,14 +1,32 @@
 obstacles = []
-while (True): # or some other condition
-    frontMeasurement = [x, y + frontSensor.distance * np.sin(th)]
-    backMeasurement = [x,y - backSensor.distance * np.sin(th)]
-    leftMeasurement = [x - leftSensor.distance * np.sin(th), y]
-    rightMeasurement = [x + rightSensor.distance * np.sin(th),y]
+while (True): # or some other condition\
+    frontDist = frontSensor.distance
+    backDist = backSensor.distance
+    rightDist = rightSensor.distance
+    leftDist = leftSensor.distance
+    if (frontDist != 1): # if something has been detected
+        frontMeasurement = [x + frontDist * np.cos(th), y + frontDist * np.sin(th)]
+    else:
+        frontMeasurement = [1000,1000]
+    if (backDist != 1):
+        backMeasurement = [x - backDist * np.cos(th), y - backDist * np.sin(th)]
+    else:
+        backMeasurement = [1000,1000]
+    if (leftDist != 1):
+        leftMeasurement = [x - leftDist * np.sin(th), y + leftDist * np.cos(th)]
+    else:
+        leftMeasurement = [1000,1000]
+    if (rightDist !=1):
+        rightMeasurement = [x + rightDist * np.sin(th), y - rightDist * np.cos(th)]
+    else:
+        rightMeasurement = [1000,1000]
     measurements = [leftMeasurement,rightMeasurement,backMeasurement,frontMeasurement]
     match = [0,0,0,0]
     for i in obstacles: # this checks for duplicates to save data space (though increases processing time)
         for j in measurements:
             if i == measurements[j]:
+                match[j] = 1
+            if measurements[j] == [1000,1000]:
                 match[j] = 1
     for j in match:
         if match[j] == 0:
