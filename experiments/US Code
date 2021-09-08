@@ -24,13 +24,14 @@ while (True): # or some other condition\
         rightMeasurement = [1000,1000]
     measurements = [leftMeasurement,rightMeasurement,backMeasurement,frontMeasurement]
     match = [0,0,0,0]
-    for i in obstacles: # this checks for duplicates to save data space (though increases processing time)
-        for j in measurements:
+    matchCount = 0
+    for j in range(0,4):
+        for i in obstacles:  # this checks for duplicates to save data space (though increases processing time)
             if i == measurements[j]:
                 match[j] = 1
             if measurements[j] == [1000,1000]:
                 match[j] = 1
-    for j in match:
-        if match[j] == 0:
+        if match[matchCount] == 0:
             obstacles.append(measurements[j])
+        matchCount += 1
     sleep(0.01) # change depending on desired measurement interval
