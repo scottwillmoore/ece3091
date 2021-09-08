@@ -1,3 +1,5 @@
+th = th * np.pi/180
+
 obstacles = []
 while (True): # or some other condition\
     frontDist = frontSensor.distance
