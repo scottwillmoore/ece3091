@@ -10,9 +10,9 @@ if _swig_python_version_info < (2, 7, 0):
 
 # Import the low-level C/C++ module
 if __package__ or "." in __name__:
-    from . import _device
+    from . import _gpio
 else:
-    import _device
+    import _gpio
 
 try:
     import builtins as __builtin__
@@ -61,56 +61,45 @@ class _SwigNonDynamicMeta(type):
     __setattr__ = _swig_setattr_nondynamic_class_variable(type.__setattr__)
 
 
-
-def set_up():
-    return _device.set_up()
-
-def tear_down():
-    return _device.tear_down()
 class Motor(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
-    def __init__(self, *args):
-        _device.Motor_swiginit(self, _device.new_Motor(*args))
-    __swig_destroy__ = _device.delete_Motor
+    def __init__(self, pin_direction, pin_speed):
+        _gpio.Motor_swiginit(self, _gpio.new_Motor(pin_direction, pin_speed))
+    __swig_destroy__ = _gpio.delete_Motor
 
-    def getDirection(self):
-        return _device.Motor_getDirection(self)
+    def backward(self, *args):
+        return _gpio.Motor_backward(self, *args)
 
-    def setDirection(self, direction):
-        return _device.Motor_setDirection(self, direction)
+    def forward(self, *args):
+        return _gpio.Motor_forward(self, *args)
 
-    def getSpeed(self):
-        return _device.Motor_getSpeed(self)
+    def reverse(self):
+        return _gpio.Motor_reverse(self)
 
-    def setSpeed(self, speed):
-        return _device.Motor_setSpeed(self, speed)
+    def stop(self):
+        return _gpio.Motor_stop(self)
+    direction = property(_gpio.Motor_direction_get, _gpio.Motor_direction_set)
+    speed = property(_gpio.Motor_speed_get, _gpio.Motor_speed_set)
 
-# Register Motor in _device:
-_device.Motor_swigregister(Motor)
-cvar = _device.cvar
-DEFAULT_PWM_FREQUENCY = cvar.DEFAULT_PWM_FREQUENCY
+# Register Motor in _gpio:
+_gpio.Motor_swigregister(Motor)
 
 
-def callbackEx(pin, value, tick, callback):
-    return _device.callbackEx(pin, value, tick, callback)
-class RotaryEncoder(object):
+def callbackEx(pin, value, tick, data):
+    return _gpio.callbackEx(pin, value, tick, data)
+class Encoder(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, pin_a, pin_b):
-        _device.RotaryEncoder_swiginit(self, _device.new_RotaryEncoder(pin_a, pin_b))
-    __swig_destroy__ = _device.delete_RotaryEncoder
+        _gpio.Encoder_swiginit(self, _gpio.new_Encoder(pin_a, pin_b))
+    __swig_destroy__ = _gpio.delete_Encoder
+    count = property(_gpio.Encoder_count_get, _gpio.Encoder_count_set)
 
-    def getCount(self):
-        return _device.RotaryEncoder_getCount(self)
-
-    def setCount(self, count):
-        return _device.RotaryEncoder_setCount(self, count)
-
-# Register RotaryEncoder in _device:
-_device.RotaryEncoder_swigregister(RotaryEncoder)
+# Register Encoder in _gpio:
+_gpio.Encoder_swigregister(Encoder)
 
 
 
