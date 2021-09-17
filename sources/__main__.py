@@ -9,8 +9,13 @@ from measurements import *
 from pins import *
 from utilities import *
 
+import numpy as np
 from gpio import Encoder, Motor
 from gpiozero import DistanceSensor, LED
+# from distance_sensor import obstacleScanner
+
+led = LED(LED_PIN)
+
 
 # Sensors
 # Actuators
@@ -119,6 +124,56 @@ class DifferentialDriveModel:
         return self.x, self.y, self.theta
 
 
+class Obstacle:
+    def __init__(self, x, y, *, life=None):
+        self.x = x
+        self.y = y
+        self.life = life
+        pass
+
+    def returnFunc(x,y):
+        return [x,y]
+
+    def __repr__(self):
+        return f"({self.x}, {self.y})"
+
+class ObjectList:
+    def __init__(self, *, threshold=10):
+        self.threshold = threshold ** 2
+
+        self.obstacles = []
+
+    def update(self, dtime):
+        for obstacle in self.obstacles:
+            if obstacle.life:
+                obstacle.life -= dtime
+                if obstacle.life < 0:
+                    # remove it!
+                    # how to safely remove list item in a loop...
+                    #pop(0)
+                    pass
+
+    def get(self, x, y):
+        for obstacle in self.obstacles:
+            distance = (x - obstacle[0]) ** 2 + (y - obstacle[1]) ** 2
+            if distance < self.threshold:
+                return obstacle
+
+        return None
+
+    def set(self, x, y):
+        if self.get(x, y):
+            return None
+        else:
+            obstacle = Obstacle.returnFunc(x, y)
+            self.obstacles.append(obstacle)
+            return obstacle
+sensor = DistanceSensor(SENSOR_ECHO_PIN, SENSOR_TRIGGER_PIN)
+sensorL = DistanceSensor(SENSOR_LEFT_ECHO_PIN,SENSOR_LEFT_TRIGGER_PIN)
+sensorR = DistanceSensor(SENSOR_RIGHT_ECHO_PIN,SENSOR_RIGHT_TRIGGER_PIN)
+#sensorB = DistanceSensor(SENSOR_BACK_ECHO_PIN, SENSOR_BACK_TRIGGER_PIN)
+# robot_distance = 160
+
 class TentacleStrategy:
     def __init__(self, model, target_x, target_y, target_theta, time_step):
         self.model = model
@@ -128,8 +183,9 @@ class TentacleStrategy:
         self.target_theta = target_theta
         self.time_step = time_step
 
-        self.obstacle_x = None
-        self.obstacle_y = None
+        # self.obstacles = obstacles
+
+        self.grid = ObjectList()
 
         self.alpha = 1
         self.beta = 0.2
@@ -142,6 +198,7 @@ class TentacleStrategy:
             (40, 40),  # Soft right
             (-20, 40),  # Medium left
             (50, -30),  # Medium left
+            (0, 0), # stationary
         ]
 
     def attempt(self, left_velocity, right_velocity):
@@ -154,12 +211,17 @@ class TentacleStrategy:
         future_y = future_model.y
         future_theta = future_model.theta
 
-        if self.obstacle_x:
+        """if self.obstacle_x:
             center_x = future_x + cos(future_theta) * 80
             center_y = future_y + cos(future_theta) * 80
             distance = sqrt((self.obstacle_x - center_x) ** 2 + (self.obstacle_y - center_y) ** 2)
             if distance < 80:
-                return 1000000 * (1 / distance)
+                return 1000000 * (1 / distance)"""
+
+        # if there is an obstacle make the cost really high to avoid using this path
+        # potentially need to use a different x and y but its too confusing
+        if (self.check_collision(future_x,future_y)):
+            return 10000000
 
         e_distance = (self.target_x - future_x) ** 2 + (self.target_y - future_y) ** 2
         e_theta = self.target_theta - future_theta
@@ -168,6 +230,81 @@ class TentacleStrategy:
         cost = self.alpha * e_distance + self.beta * (e_theta ** 2)
 
         return cost
+
+    def grid_update(self):
+        x = self.model.x
+        y = self.model.y
+        theta = self.model.theta
+
+        robot_distanceL = 60
+        robot_distanceR = 60
+        robot_distanceF = 75
+        if sensor.distance < 0.3:
+            #led.on()
+            
+            sensor_distance = sensor.distance * 1000
+            distance = robot_distanceF + sensor_distance
+            object_x = x + cos(theta) * distance
+            object_y = y + sin(theta) * distance
+
+            self.grid.set(object_x, object_y)
+            sleep(0.01)
+
+        if sensorL.distance < 0.3:
+            #led.on()
+            
+            sensor_distanceL = sensorL.distance * 1000
+            distance = robot_distanceL + sensor_distanceL
+            object_x = x - sin(theta) * distance
+            object_y = y + cos(theta) * distance
+            
+            self.grid.set(object_x,object_y)
+            sleep(0.01)
+        
+        if sensorR.distance < 0.3:
+            #led.on()
+            
+            sensor_distanceR = sensorR.distance * 1000
+            distance = robot_distanceR + sensor_distanceR
+            object_x = x + sin(theta) * distance
+            object_y = y - cos(theta) * distance
+            
+            self.grid.set(object_x,object_y)
+            sleep(0.01)
+        
+            """if sensorB.distance < 0.3:
+            #led.on()
+            
+            sensor_distanceB = sensorB.distance *1000
+            distance = robot_distanceB + sensor_distanceB
+            object_x = x - cos(theta) * distance
+            object_y = y - sin(theta) * distance
+            
+            grid.set(object_x,object_y)
+            sleep(0.01)"""
+
+        #else:
+            #led.off()
+
+        list = np.array(self.grid.obstacles)
+        self.obstacles = list
+        # sleep(1)
+
+        return list
+    
+
+    # this function reads the obstacle inputs which are provided as a np array and then determines the minimum distance to an object
+    # if the object is less than 40000, return that there is an obstacle in the way
+    def check_collision(self,x,y):
+        # if statement checks to see if there are any obstacles
+        # return false if no obstacles or obstacles far away
+        if self.obstacles.size > 0:
+            min_dist = np.min(np.sqrt((x-self.obstacles[:,0])**2 + (y-self.obstacles[:,1])**2))
+            # allow for 150mm from reference point to nose, and then 50 mm clearance (200^2)
+            # reference allowance can be tweaked as we go
+            if (min_dist < 40000):
+                return True
+        return False
 
     def plan(self):
         costs = list(map(lambda x: self.attempt(*x), self.tentacles))
@@ -182,15 +319,14 @@ class TentacleStrategy:
         return self.tentacles[min_i]
 
 
-FREQUENCY = 10
+FREQUENCY = 1
 PERIOD = 1 / FREQUENCY
 
 TOTAL_TIME = 30
 TOTAL_ITERATION_COUNT = floor(TOTAL_TIME / PERIOD)
 
-sensor = DistanceSensor(SENSOR_ECHO_PIN, SENSOR_TRIGGER_PIN)
+#sensor = DistanceSensor(SENSOR_ECHO_PIN, SENSOR_TRIGGER_PIN)
 
-led = LED(LED_PIN)
 
 left_encoder = Encoder(LEFT_ENCODER_A_PIN, LEFT_ENCODER_B_PIN)
 left_motor = Motor(LEFT_MOTOR_DIRECTION_PIN, LEFT_MOTOR_SPEED_PIN)
@@ -202,10 +338,11 @@ left_wheel = WheelController(left_encoder, left_motor)
 right_wheel = WheelController(right_encoder, right_motor)
 
 model = DifferentialDriveModel()
-model.theta = PI / 4
+# model.theta = PI / 4
 
-strategy = TentacleStrategy(model, 300, 300, 0, PERIOD)
+# obstacles = obstacleScanner()
 
+strategy = TentacleStrategy(model, 300, 300, 90, PERIOD)
 
 obstacle_cooldown = 0
 
@@ -227,10 +364,14 @@ try:
         left_velocity = left_wheel.measure(dtime)
         right_velocity = right_wheel.measure(dtime)
 
+        obstacles = strategy.grid_update()
+        
+        print(obstacles)
+        
         x, y, theta = model.update(dtime, left_velocity, right_velocity)
-        print(f"MODEL: ({x: 8.2f}, {y: 8.2f}, {theta*RADIANS_TO_DEGREES: 7.2f}º)")
+        #print(f"MODEL: ({x: 8.2f}, {y: 8.2f}, {theta*RADIANS_TO_DEGREES: 7.2f}º)")
 
-        obstacle_distance = (sensor.distance * 1000) + 80
+        """obstacle_distance = (sensor.distance * 1000) + 80
 
         if obstacle_distance < 250:
             led.on()
@@ -241,7 +382,7 @@ try:
             obstacle_cooldown = 4
             strategy.obstacle_x = x + cos(theta) * obstacle_distance
             strategy.obstacle_y = y + sin(theta) * obstacle_distance
-            print(f"OBSTACLE: ({strategy.obstacle_x: 8.2f}, {strategy.obstacle_y: 8.2f})")
+            print(f"OBSTACLE: ({strategy.obstacle_x: 8.2f}, {strategy.obstacle_y: 8.2f})")"""
 
         target_distance = (strategy.target_x - x) ** 2 + (strategy.target_y - y) ** 2
         if target_distance < 60:
@@ -249,8 +390,8 @@ try:
 
         new_left_velocity, new_right_velocity = strategy.plan()
 
-        left_wheel.apply(dtime, new_left_velocity)
-        right_wheel.apply(dtime, new_right_velocity)
+        # left_wheel.apply(dtime, new_left_velocity)
+        # right_wheel.apply(dtime, new_right_velocity)
 
 except KeyboardInterrupt:
     exit()
