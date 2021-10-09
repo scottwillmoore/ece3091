@@ -4,13 +4,15 @@
         "rclcpp",
         "rclpy",
         "rviz",
-        "theora"
+        "theora",
+        "urdf",
+        "xacro"
     ],
     "cmake.configureOnOpen": false,
     "python.formatting.blackArgs": ["--line-length=80"],
     "python.formatting.provider": "black",
     "python.linting.enabled": true,
-    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Enabled": false,
     "python.linting.mypyEnabled": false,
     "python.linting.pylintEnabled": false,
     "xml.server.preferBinary": false,
