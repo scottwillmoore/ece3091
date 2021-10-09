@@ -1,4 +1,4 @@
+/build/
+/install/
+/log/
 __pycache__
-*.o
-*.so
-*_wrap.cxx

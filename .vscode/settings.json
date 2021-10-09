@@ -1,0 +1,15 @@
+{
+    "cSpell.allowCompoundWords": true,
+    "cSpell.words": [
+        "rclcpp",
+        "rclpy",
+        "rviz",
+        "theora"
+    ],
+    "python.formatting.blackArgs": ["--line-length=80"],
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": false,
+    "python.linting.pylintEnabled": false,
+}
