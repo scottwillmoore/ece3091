@@ -6,10 +6,12 @@
         "rviz",
         "theora"
     ],
+    "cmake.configureOnOpen": false,
     "python.formatting.blackArgs": ["--line-length=80"],
     "python.formatting.provider": "black",
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
     "python.linting.mypyEnabled": false,
     "python.linting.pylintEnabled": false,
+    "xml.server.preferBinary": false,
 }
