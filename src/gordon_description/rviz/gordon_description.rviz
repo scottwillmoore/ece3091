@@ -69,15 +69,80 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        caster_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         footprint_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        gate_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        base_link:
+          Value: true
+        camera_link:
+          Value: true
+        caster_link:
+          Value: true
+        footprint_link:
+          Value: true
+        gate_link:
+          Value: true
+        left_wheel_link:
+          Value: true
+        right_wheel_link:
+          Value: true
+      Marker Scale: 0.10000000149011612
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        base_link:
+          camera_link:
+            {}
+          caster_link:
+            {}
+          footprint_link:
+            {}
+          gate_link:
+            {}
+          left_wheel_link:
+            {}
+          right_wheel_link:
+            {}
+      Update Interval: 0
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -124,25 +189,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1
+      Distance: 0.6866230964660645
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 0.03404904901981354
+        Y: -0.023885831236839294
+        Z: -0.002245793817564845
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0010000000474974513
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.0010000000474974513
-      Pitch: 0.5
+      Pitch: 0.49000024795532227
       Target Frame: footprint_link
       Value: Orbit (rviz)
-      Yaw: 0.5
+      Yaw: 5.498202800750732
     Saved: ~
 Window Geometry:
   Displays:
@@ -160,5 +225,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 2050
-  X: 134
-  Y: 628
+  X: 70
+  Y: 564

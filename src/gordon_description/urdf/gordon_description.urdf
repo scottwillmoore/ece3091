@@ -1,17 +1,57 @@
 <?xml version="1.0"?>
 <robot name="gordon" xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:property name="base_height" value="0.18" />
-    <xacro:property name="base_length" value="0.42" />
-    <xacro:property name="base_width" value="0.31" />
+    <xacro:property name="base_height" value="0.046" />
+    <xacro:property name="base_length" value="0.160" />
+    <xacro:property name="base_width" value="0.060" />
+    <xacro:property name="base_x_origin" value="${(base_length / 2) - wheel_x_offset}" />
+    <xacro:property name="base_z_origin" value="${base_height / 2}" />
+
+    <xacro:property name="camera_height" value="0.010" />
+    <xacro:property name="camera_length" value="0.028" />
+    <xacro:property name="camera_width" value="0.032" />
+    <xacro:property name="camera_x_offset" value="${base_length + 0.020}" />
+    <xacro:property name="camera_z_offset" value="${base_height + 0.082}" />
+    <xacro:property name="camera_pitch" value="${-pi / 4}" />
+
+    <xacro:property name="caster_radius" value="0.005" />
+    <xacro:property name="caster_x_offset" value="0.115" />
+    <xacro:property name="caster_z_offset" value="${footprint_z_offset - caster_radius}" />
+
+    <xacro:property name="footprint_z_offset" value="${wheel_z_offset + wheel_radius}" />
+
+    <xacro:property name="gate_height" value="0.044" />
+    <xacro:property name="gate_length" value="0.009" />
+    <xacro:property name="gate_width" value="0.033" />
+    <xacro:property name="gate_x_offset" value="${base_length + 0.078}" />
+    <xacro:property name="gate_z_offset" value="0.034" />
+    <xacro:property name="gate_z_origin" value="${-((gate_height / 2) - 0.004)}" />
+
+    <xacro:property name="wheel_radius" value="0.027" />
+    <xacro:property name="wheel_separation" value="0.092" />
+    <xacro:property name="wheel_width" value="0.024" />
+    <xacro:property name="wheel_x_offset" value="0.030" />
+    <xacro:property name="wheel_y_offset" value="${wheel_separation / 2}" />
+    <xacro:property name="wheel_z_offset" value="0.012" />
+
+    <material name="cyan">
+        <color rgba="0 1.0 1.0 1.0" />
+    </material>
+
+    <material name="grey">
+        <color rgba="0.5 0.5 0.5 1.0" />
+    </material>
+
+    <material name="magenta">
+        <color rgba="1.0 0.0 1.0 1.0" />
+    </material>
 
     <link name="base_link">
         <visual>
+            <origin xyz="${base_x_origin} 0 ${base_z_origin}" rpy="0 0 0" />
             <geometry>
                 <box size="${base_length} ${base_width} ${base_height}" />
             </geometry>
-            <material name="base_material">
-                <color rgba="0 1.0 1.0 1.0" />
-            </material>
+            <material name="cyan" />
         </visual>
     </link>
 
@@ -20,6 +60,75 @@
     <joint name="base_joint" type="fixed">
         <parent link="base_link" />
         <child link="footprint_link" />
-        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+        <origin xyz="0 0 ${-footprint_z_offset}" rpy="0 0 0" />
+    </joint>
+
+    <xacro:macro name="wheel" params="prefix reflect">
+        <link name="${prefix}_wheel_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="${pi / 2} 0 0" />
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}" />
+                </geometry>
+                <material name="grey" />
+            </visual>
+        </link>
+
+        <joint name="${prefix}_wheel_joint" type="continuous">
+            <parent link="base_link" />
+            <child link="${prefix}_wheel_link" />
+            <origin xyz="0 ${reflect * wheel_y_offset} ${-wheel_z_offset}" rpy="0 0 0" />
+            <axis xyz="0 1 0" />
+        </joint>
+    </xacro:macro>
+
+    <xacro:wheel prefix="left" reflect="1" />
+    <xacro:wheel prefix="right" reflect="-1" />
+
+    <link name="caster_link">
+        <visual>
+            <geometry>
+                <sphere radius="${caster_radius}" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+    </link>
+
+    <joint name="caster_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="caster_link" />
+        <origin xyz="${caster_x_offset} 0 ${-caster_z_offset}" rpy="0 0 0" />
+    </joint>
+
+    <link name="camera_link">
+        <visual>
+            <geometry>
+                <box size="${camera_length} ${camera_width} ${camera_height}" />
+            </geometry>
+            <material name="magenta" />
+        </visual>
+    </link>
+
+    <joint name="camera_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="camera_link" />
+        <origin xyz="${camera_x_offset} 0 ${camera_z_offset}" rpy="0 ${camera_pitch} 0" />
+    </joint>
+
+    <link name="gate_link">
+        <visual>
+            <origin xyz="0 0 ${gate_z_origin}" rpy="0 0 0" />
+            <geometry>
+                <box size="${gate_length} ${gate_width} ${gate_height}" />
+            </geometry>
+            <material name="magenta" />
+        </visual>
+    </link>
+
+    <joint name="gate_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="gate_link" />
+        <origin xyz="${gate_x_offset} 0 ${gate_z_offset}" rpy="0 0 0" />
+        <axis xyz="0 1 0" />
     </joint>
 </robot>
