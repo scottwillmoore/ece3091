@@ -5,34 +5,32 @@ import random
 import time
 
 
-# Load Yolo
 net = cv2.dnn.readNet("yolov3_training_last.weights", "yolov3_testing.cfg")
 
-# Name custom object
 classes = ["BallBearing"]
 
-# # Images path
 # images_path = glob.glob(r"C:\Users\Saad Taslaq\Desktop\Monash University\Third Year\Sec Sem\ECE3091\ComputerVision\Test_images\Datasets\Labels2\frames\framesjpg\*.jpg")
-
 
 layer_names = net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
-# Loading camera
-cap = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(0)
 
 font = cv2.FONT_HERSHEY_PLAIN
 starting_time = time.time()
 frame_id = 0
 
 while True:
-    _, frame = cap.read()
+    _, frame = camera.read()
     frame_id += 1
 
     height, width, channels = frame.shape
-        # Detecting objects
-    blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
+    # Detecting objects
+    blob = cv2.dnn.blobFromImage(
+        frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False
+    )
 
     net.setInput(blob)
     outs = net.forward(output_layers)
@@ -71,15 +69,25 @@ while True:
             color = colors[class_ids[i]]
             cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
             cv2.rectangle(frame, (x, y), (x + w, y + 30), color, -1)
-            cv2.putText(frame, label + " " + str(round(confidence, 2)), (x, y + 30), font, 3, (255,255,255), 3)
-    
+            cv2.putText(
+                frame,
+                label + " " + str(round(confidence, 2)),
+                (x, y + 30),
+                font,
+                3,
+                (255, 255, 255),
+                3,
+            )
+
     elapsed_time = time.time() - starting_time
     fps = frame_id / elapsed_time
-    cv2.putText(frame, "FPS: " + str(round(fps, 2)), (10, 50), font, 3, (0, 0, 0), 3)
+    cv2.putText(
+        frame, "FPS: " + str(round(fps, 2)), (10, 50), font, 3, (0, 0, 0), 3
+    )
     cv2.imshow("Image", frame)
     key = cv2.waitKey(1)
     if key == 27:
         break
 
-cap.release()
+camera.release()
 cv2.destroyAllWindows()
