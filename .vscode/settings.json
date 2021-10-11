@@ -2,6 +2,7 @@
     "C_Cpp.clang_format_fallbackStyle": "WebKit",
     "cSpell.allowCompoundWords": true,
     "cSpell.words": [
+        "ament",
         "chrono",
         "gpio",
         "odometry",
