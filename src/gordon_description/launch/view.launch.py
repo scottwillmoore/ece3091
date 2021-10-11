@@ -8,7 +8,7 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    package_share_path = FindPackageShare(package="gordon_description").find(
+    package_share_path = FindPackageShare("gordon_description").find(
         "gordon_description"
     )
 
