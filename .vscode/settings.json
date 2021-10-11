@@ -14,7 +14,7 @@
         "xacro"
     ],
     "cmake.configureOnOpen": false,
-    "python.formatting.blackArgs": ["--line-length=80"],
+    "python.formatting.blackArgs": ["--line-length=100"],
     "python.formatting.provider": "black",
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": false,

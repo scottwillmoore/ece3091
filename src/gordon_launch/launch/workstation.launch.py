@@ -28,14 +28,20 @@ def generate_launch_description():
     image_processor = ComposableNodeContainer(
         package="rclcpp_components",
         executable="component_container",
-        name="image_processor",
         namespace="camera",
+        name="image_processor",
         composable_node_descriptions=[
             ComposableNode(
                 package="image_proc",
                 plugin="image_proc::RectifyNode",
-                name="rectifier",
-                remappings=[("image_rect", "image_rectified")],
+                namespace="camera",
+                name="image_rectifier",
+                remappings=[
+                    ("image_rect", "image_rectified"),
+                    ("image_rect/compressed", "image_rectified/compressed"),
+                    ("image_rect/compressedDepth", "image_rectified/compressedDepth"),
+                    ("image_rect/theora", "image_rectified/theora"),
+                ],
             )
         ],
     )
@@ -44,5 +50,5 @@ def generate_launch_description():
 
     rviz = Node(package="rviz2", executable="rviz2", name="rviz")
 
-    return LaunchDescription([image_decoder, rqt, rviz])
+    return LaunchDescription([image_decoder, image_processor, rqt, rviz])
 
