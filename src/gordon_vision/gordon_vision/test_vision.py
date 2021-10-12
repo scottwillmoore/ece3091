@@ -10,13 +10,11 @@ from sensor_msgs.msg import Image
 
 
 def view_classification(net, image):
-    ta = time.time()
+    # ta = time.time()
     classes = ["BallBearing"]
 
     layer_names = net.getLayerNames()
-    output_layers = [
-        layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()
-    ]
+    output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
     colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
@@ -27,21 +25,19 @@ def view_classification(net, image):
     height, width, channels = frame.shape
     # Detecting objects
 
-    tb = time.time()
-    print("tb - ta", tb - ta)
+    # tb = time.time()
+    # print("tb - ta", tb - ta)
 
-    blob = cv2.dnn.blobFromImage(
-        frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False
-    )
+    blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
 
-    tc = time.time()
-    print("tc - tb", tc - tb)
+    # tc = time.time()
+    # print("tc - tb", tc - tb)
 
     net.setInput(blob)
     outs = net.forward(output_layers)
 
-    td = time.time()
-    print("td - tc", td - tc)
+    # td = time.time()
+    # print("td - tc", td - tc)
 
     # Showing informations on the screen
     class_ids = []
@@ -67,13 +63,13 @@ def view_classification(net, image):
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
 
-    te = time.time()
-    print("te - td", te - td)
+    # te = time.time()
+    # print("te - td", te - td)
 
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.4, 0.3)
 
-    tf = time.time()
-    print("tf - te", tf - te)
+    # tf = time.time()
+    # print("tf - te", tf - te)
 
     for i in range(len(boxes)):
         if i in indexes:
@@ -93,14 +89,14 @@ def view_classification(net, image):
                 3,
             )
 
-    tg = time.time()
-    print("tg - tf", tg - tf)
+    # tg = time.time()
+    # print("tg - tf", tg - tf)
 
     cv2.imshow("Image", frame)
     cv2.waitKey(1)
 
-    elapsed = time.time() - ta
-    print(elapsed)
+    # elapsed = time.time() - ta
+    # print(elapsed)
 
 
 class ComputerVisionNode(Node):
@@ -129,9 +125,7 @@ class ComputerVisionNode(Node):
 
         self.get_logger().info(f"configuration = {configuration}")
 
-        self.subscription = self.create_subscription(
-            Image, "image", self.image_callback, 10
-        )
+        self.subscription = self.create_subscription(Image, "image", self.image_callback, 10)
 
         self.bridge = CvBridge()
 

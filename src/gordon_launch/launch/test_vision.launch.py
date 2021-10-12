@@ -4,6 +4,12 @@ from launch_ros.descriptions import ComposableNode
 
 
 def generate_launch_description():
+    configuration_path = "/home/scott/yolov3/yolov3.cfg"
+    model_path = "/home/scott/yolov3/yolov3.weights"
+
+    # configuration_path = "/home/scott/yolov4_tiny/yolov4-tiny-custom.cfg"
+    # model_path = "/home/scott/yolov4_tiny/yolov4_tiny_training_final.weights"
+
     image_decoder = Node(
         package="image_transport",
         executable="republish",
@@ -43,9 +49,13 @@ def generate_launch_description():
         ],
     )
 
-    rqt = Node(package="rqt_gui", executable="rqt_gui", name="rqt")
+    test_vision = Node(
+        package="gordon_vision",
+        executable="vision",
+        name="vision",
+        parameters=[{"configuration": configuration_path, "model": model_path}],
+        remappings=[("image", "camera/image_rectified")],
+    )
 
-    rviz = Node(package="rviz2", executable="rviz2", name="rviz")
-
-    return LaunchDescription([image_decoder, image_processor, rqt, rviz])
+    return LaunchDescription([image_decoder, image_processor, test_vision])
 
