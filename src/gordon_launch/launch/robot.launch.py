@@ -1,17 +1,13 @@
-from os.path import join
-
-
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import Command
 from launch_ros.actions import Node
+from os.path import join
 
 
 def generate_launch_description():
-    gordon_launch_path = get_package_share_directory("gordon_launch")
     gordon_description_path = get_package_share_directory("gordon_description")
-
-    robot_description_path = join(gordon_description_path, "urdf/gordon_description.urdf")
+    robot_description_path = join(gordon_description_path, "urdf/robot.urdf")
 
     camera = Node(
         package="v4l2_camera", executable="v4l2_camera_node", namespace="camera", name="camera"
