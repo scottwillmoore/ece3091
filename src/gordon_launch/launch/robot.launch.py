@@ -14,7 +14,11 @@ def generate_launch_description():
     robot_description_path = join(gordon_description_path, "urdf/gordon_description.urdf")
 
     camera = Node(
-        package="v4l2_camera", executable="v4l2_camera_node", namespace="camera", name="camera"
+        package="v4l2_camera",
+        executable="v4l2_camera_node",
+        namespace="camera",
+        name="camera",
+        parameters=[{"camera_frame_id": "camera_link"}],
     )
 
     joint_state_publisher = Node(
