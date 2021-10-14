@@ -4,11 +4,11 @@ from launch_ros.descriptions import ComposableNode
 
 
 def generate_launch_description():
-    configuration_path = "/home/scott/yolov3/yolov3.cfg"
-    model_path = "/home/scott/yolov3/yolov3.weights"
+    # configuration_path = "/home/scott/yolov3/yolov3.cfg"
+    # model_path = "/home/scott/yolov3/yolov3.weights"
 
-    # configuration_path = "/home/scott/yolov4_tiny/yolov4-tiny-custom.cfg"
-    # model_path = "/home/scott/yolov4_tiny/yolov4_tiny_training_final.weights"
+    configuration_path = "/home/scott/yolov4_tiny/yolov4-tiny-obj.cfg"
+    model_path = "/home/scott/yolov4_tiny/yolov4_tiny_new__training_final.weights"
 
     image_decoder = Node(
         package="image_transport",
@@ -51,8 +51,8 @@ def generate_launch_description():
 
     test_vision = Node(
         package="gordon_vision",
-        executable="vision",
-        name="vision",
+        executable="test_vision",
+        name="test_vision",
         parameters=[{"configuration": configuration_path, "model": model_path}],
         remappings=[("image", "camera/image_rectified")],
     )
