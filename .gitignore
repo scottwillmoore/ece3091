@@ -1,6 +1,5 @@
+.mypy_cache
 /build/
 /install/
 /log/
-/src/angles/
-/src/ros-controls/
 __pycache__

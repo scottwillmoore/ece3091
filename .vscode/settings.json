@@ -18,7 +18,7 @@
     "python.formatting.provider": "black",
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": false,
-    "python.linting.mypyEnabled": false,
+    "python.linting.mypyEnabled": true,
     "python.linting.pylintEnabled": false,
     "xml.server.preferBinary": false,
     "files.associations": {

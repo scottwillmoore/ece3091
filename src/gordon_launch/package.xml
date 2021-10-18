@@ -11,17 +11,10 @@
 
   <exec_depend>gordon_description</exec_depend>
   <exec_depend>gordon_hardware</exec_depend>
-
-  <!-- Robot -->
+  <exec_depend>image_transport</exec_depend>
   <exec_depend>joint_state_publisher</exec_depend>
-  <exec_depend>robot_localization</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>v4l2_camera</exec_depend>
-
-  <!-- Workstation -->
-  <exec_depend>gordon_description</exec_depend>
-  <exec_depend>image_proc</exec_depend>
-  <exec_depend>image_transport</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
