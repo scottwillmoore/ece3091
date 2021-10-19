@@ -150,10 +150,10 @@
 
     <link name="sonar_front_link"/>
         <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <box size="0.01 0.01 0.01"/>
-        </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
         </visual>
     </link>
 
@@ -167,10 +167,10 @@
 
     <link name="sonar_left_link"/>
         <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <box size="0.01 0.01 0.01"/>
-        </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
         </visual>
     </link>
 
