@@ -50,7 +50,3 @@ class Gate:
 
         self._pi.write(self._left_servo_pin, 0)
         self._pi.write(self._right_servo_pin, 0)
-
-
-gate = Gate(25,18)
-gate.rotate()
