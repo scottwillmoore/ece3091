@@ -36,11 +36,14 @@ class UltrasonicControllerNode(Node):
     self._last_update_time = current_time
 
     measurement = Range()
+    measurement.header.stamp = current_time
+    measurement.header.frame_id = "sensor"
     measurement.radiation_type = 0
+    measurement.header.stamp
     measurement.field_of_view = 0.5236
     measurement.min_range = 0.002
     measurement.max_range = 1.0
-    measurement.range = 0.6
+    measurement.range = self._ultrasonic.range
 
     self._range_publisher.publish(measurement)
     
