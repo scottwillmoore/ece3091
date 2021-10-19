@@ -11,11 +11,11 @@
     <xacro:property name="camera_length" value="0.028" />
     <xacro:property name="camera_width" value="0.032" />
 
-    <xacro:property name="camera_x_offset" value="${base_length + 0.020}" />
-    <xacro:property name="camera_z_offset" value="${base_height + 0.082}" />
+    <xacro:property name="camera_x_offset" value="${base_length + 0.1608}" />
+    <xacro:property name="camera_z_offset" value="${base_height + 0.1600}" />
 
-    <xacro:property name="camera_roll" value="${3*pi/2 - 36.9*pi/180}" />
-    <xacro:property name="camera_yaw" value="${-pi/2}" />
+    <xacro:property name="camera_roll" value="${-1.5128}" />
+    <xacro:property name="camera_yaw" value="${3.0800}" />
 
     <xacro:property name="caster_radius" value="0.005" />
 
@@ -39,6 +39,15 @@
     <xacro:property name="wheel_x_offset" value="0.030" />
     <xacro:property name="wheel_y_offset" value="${wheel_separation / 2}" />
     <xacro:property name="wheel_z_offset" value="0.012" />
+    
+    <xacro:property name="front_sensor_x_offset" value="0.0113"/>
+    <xacro:property name="front_sensor_y_offset" value="0"/>
+    <xacro:property name="front_sensor_z_offset" value="0.07"/>
+
+    <xacro:property name="left_sensor_x_offset" value="0.0102"/>
+    <xacro:property name="left_sensor_y_offset" value="0.05"/>
+    <xacro:property name="left_sensor_z_offset" value="0.038"/>
+
 
     <material name="cyan">
         <color rgba="0 1.0 1.0 1.0" />
@@ -139,3 +148,36 @@
         <axis xyz="0 1 0" />
     </joint>
 </robot>
+
+<link name="sonar_front_link"/>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+ </link>
+
+<joint name="sonar_front_joint" type="fixed"/>
+    <parent link="base_link"/>
+    <child link="sonar_front_link"/>
+    <origin rpy="0 0 0" xyz="${front_sensor_x_offset} {front_sensor_y_offset} {front_sensor_z_offset}" />
+    <axis xyz="0 1 0" />
+</joint>
+
+
+<link name="sonar_left_link"/>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+ </link>
+
+<joint name="sonar_left_joint" type="fixed"/>
+    <parent link="base_link"/>
+    <child link="sonar_left_link"/>
+    <origin rpy="0 0 0" xyz="${left_sensor_x_offset} {left_sensor_y_offset} {left_sensor_z_offset}" />  
+    <axis xyz="0 1 0" />
+</joint>

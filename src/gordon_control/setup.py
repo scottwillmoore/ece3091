@@ -15,6 +15,7 @@ setup(
         "console_scripts": [
             "drive_controller = gordon_control.nodes.drive_controller_node:main",
             "wheel_controller = gordon_control.nodes.wheel_controller_node:main",
+            "ultrasonic_controller = gordon_control.nodes.ultrasonic_controller_node:main",
         ]
     },
     install_requires=["setuptools"],
