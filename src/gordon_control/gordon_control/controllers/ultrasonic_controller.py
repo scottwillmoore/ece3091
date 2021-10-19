@@ -5,6 +5,7 @@ class UltrasonicSensor:
         self._echo_pin = echo_pin
         self._trigger_pin = trigger_pin
         self._sensor = DistanceSensor(self._echo_pin,self._trigger_pin)
+        self._range = range
     
     def read_distance(self):
         range = self._sensor.distance
