@@ -39,7 +39,7 @@ class UltrasonicControllerNode(Node):
     measurement.radiation_type = 0
     measurement.field_of_view = 0.5236
     measurement.min_range = 0.002
-    measurement.max_range = 1
+    measurement.max_range = 1.0
     measurement.range = self._ultrasonic_controller.range
 
     self._range_publisher.publish(measurement)
