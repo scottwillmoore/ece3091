@@ -18,8 +18,8 @@ def generate_launch_description():
         name="front_sensor_controller",
         remappings=[(range)],
         parameters=[ {
-                "ECHO_PIN": FRONT_SENSOR_ECHO_PIN,
-                "TRIGGER_PIN": FRONT_SENSOR_TRIGGER_PIN},],
+                "echo_pin": FRONT_SENSOR_ECHO_PIN,
+                "trigger_pin": FRONT_SENSOR_TRIGGER_PIN},],
     )
 
     left_sensor_controller = Node(
@@ -28,8 +28,8 @@ def generate_launch_description():
         name="left_sensor_controller",
         remappings=[(range)],
         parameters=[{
-                "ECHO_PIN": LEFT_SENSOR_ECHO_PIN,
-                "TRIGGER_PIN": LEFT_SENSOR_TRIGGER_PIN},],
+                "echo_pin": LEFT_SENSOR_ECHO_PIN,
+                "trigger_pin": LEFT_SENSOR_TRIGGER_PIN},],
     )
 
     """right_sensor_controller = Node(
