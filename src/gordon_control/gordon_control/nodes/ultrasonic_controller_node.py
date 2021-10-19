@@ -36,7 +36,7 @@ class UltrasonicControllerNode(Node):
     self._last_update_time = current_time
 
     measurement = Range()
-    measurement.header.stamp = current_time
+    measurement.header.stamp = Time
     measurement.header.frame_id = "sensor"
     measurement.radiation_type = 0
     measurement.header.stamp
