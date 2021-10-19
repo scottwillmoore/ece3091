@@ -1,6 +1,7 @@
 from rclpy import init, shutdown, spin
 from rclpy.node import Node
 from rclpy.parameter import Parameter
+<<<<<<< HEAD
 from rclpy.publisher import Publisher
 from rclpy.time import Time
 from rclpy.timer import Timer
@@ -8,6 +9,12 @@ from std_msgs.msg import Float64
 
 from gordon_control.controllers.ultrasonic_controller import UltrasonicController
 from gordon_control.drivers.ultrasonic import UltrasonicSensor
+=======
+from rclpy.time import Time
+from sensor_msgs import Range
+
+from gordon_control.controllers.ultrasonic_controller import UltrasonicSensor
+>>>>>>> 9462a075d6c1ec77d364676ff8d669ae6bc9d154
 
 class UltrasonicControllerNode(Node):
 
@@ -21,7 +28,11 @@ class UltrasonicControllerNode(Node):
     self.declare_parameter("echo_pin", Parameter.Type.INTEGER)
     self.declare_parameter("trigger_pin", Parameter.Type.INTEGER)
 
+<<<<<<< HEAD
     self._range_publisher = self.create_publisher(Float64, "range", 10)
+=======
+    self._range_publisher = self.create_publisher(Range, "range", 10)
+>>>>>>> 9462a075d6c1ec77d364676ff8d669ae6bc9d154
 
     self._timer = self.create_timer(2.0, self._timer_callback)
 
@@ -38,6 +49,7 @@ class UltrasonicControllerNode(Node):
 
     self._last_update_time = current_time
 
+<<<<<<< HEAD
     range = Float64()
     range.data = self._ultrasonic_controller.range
 
@@ -46,6 +58,19 @@ class UltrasonicControllerNode(Node):
 def main(args=None):
   init(args=args)
 
+=======
+    measurement = Range()
+    measurement.radiation_type = 0
+    measurement.field_of_view = 0.5236
+    measurement.min_range = 0.002
+    measurement.max_range = 1
+    measurement.range = self._ultrasonic_controller.range
+
+    self._range_publisher.publish(measurement)
+    
+def main(args=None):
+  init(args=args)
+>>>>>>> 9462a075d6c1ec77d364676ff8d669ae6bc9d154
   node = UltrasonicControllerNode()
 
   try:
