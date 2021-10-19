@@ -164,7 +164,6 @@
         <axis xyz="0 1 0" />
     </joint>
 
-
     <link name="sonar_left_link"/>
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
