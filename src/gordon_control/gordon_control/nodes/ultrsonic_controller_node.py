@@ -4,11 +4,11 @@ from rclpy.parameter import Parameter
 from rclpy.time import Time
 from sensor_msgs import Range
 
-from gordon_control.controllers.ultrasonic_controller import UltrasonicController
+from gordon_control.controllers.ultrasonic_controller import UltrasonicSensor
 
 class UltrasonicControllerNode(Node):
 
-  _ultrasonic: UltrasonicController
+  _ultrasonic: UltrasonicSensor
 
   _last_update_time: Time
   
@@ -25,7 +25,7 @@ class UltrasonicControllerNode(Node):
     echo_pin = self.get_parameter("echo_pin").value
     trigger_pin = self.get_parameter("trigger_pin").value
 
-    self._ultrasonic = UltrasonicController(echo_pin,trigger_pin)
+    self._ultrasonic = UltrasonicSensor(echo_pin,trigger_pin)
 
     current_time = self.get_clock().now()
     self._last_update_time = current_time
