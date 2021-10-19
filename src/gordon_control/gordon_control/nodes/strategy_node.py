@@ -65,7 +65,7 @@ class StrategyNode(Node):
 
 def main(args=None):
   init(args=args)
-  node = ActionNode()
+  node = StrategyNode()
 
   try:
     spin(node)
