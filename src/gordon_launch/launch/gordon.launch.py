@@ -20,8 +20,5 @@ def generate_launch_description():
     ultrasonic_path = join(gordon_launch_path, "launch/gordon_ultrasonic.launch.py")
     ultrasonic = IncludeLaunchDescription(PythonLaunchDescriptionSource(ultrasonic_path))
 
-    ultrasonic_path = join(gordon_launch_path, "launch/gordon_ultrasonic.launch.py")
-    description = IncludeLaunchDescription(PythonLaunchDescriptionSource(ultrasonic_path))
-
     return LaunchDescription([camera, control, description])
 
