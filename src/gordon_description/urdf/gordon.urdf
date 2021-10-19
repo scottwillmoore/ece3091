@@ -160,7 +160,7 @@
     <joint name="sonar_front_joint" type="fixed">
         <parent link="base_link"/>
         <child link="sonar_front_link"/>
-        <origin rpy="0 0 0" xyz="${front_sensor_x_offset} {front_sensor_y_offset} {front_sensor_z_offset}" />
+        <origin rpy="0 0 0" xyz="${front_sensor_x_offset} ${front_sensor_y_offset} ${front_sensor_z_offset}" />
         <axis xyz="0 1 0" />
     </joint>
 
@@ -176,7 +176,7 @@
     <joint name="sonar_left_joint" type="fixed">
         <parent link="base_link"/>
         <child link="sonar_left_link"/>
-        <origin rpy="0 0 0" xyz="${left_sensor_x_offset} {left_sensor_y_offset} {left_sensor_z_offset}" />  
+        <origin rpy="0 0 0" xyz="${left_sensor_x_offset} ${left_sensor_y_offset} ${left_sensor_z_offset}" />  
         <axis xyz="0 1 0" />
     </joint>
 </robot>
