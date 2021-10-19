@@ -1,12 +1,16 @@
 from gpiozero import DistanceSensor
 
 class UltrasonicSensor:
+    @property
+    def range(self) -> float:
+        return self._sensor.distance
+
+
     def __init__(self, echo_pin: int, trigger_pin: int):
         self._echo_pin = echo_pin
         self._trigger_pin = trigger_pin
         self._sensor = DistanceSensor(self._echo_pin,self._trigger_pin)
-    
-    def read_distance(self):
-        range_measure = self._sensor.distance
-        self.range = range_measure
+
+sensor2=UltrasonicSensor(24,23)
+print(sensor2.range)
 
