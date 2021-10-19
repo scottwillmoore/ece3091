@@ -2,8 +2,8 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 
-LEFT_SERVO_PIN = 16
-RIGHT_SERVO_PIN = 12
+LEFT_SERVO_PIN = 25
+RIGHT_SERVO_PIN = 18
 
 def generate_launch_description():
     gate_controller = Node(

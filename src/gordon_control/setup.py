@@ -16,7 +16,7 @@ setup(
             "drive_controller = gordon_control.nodes.drive_controller_node:main",
             "wheel_controller = gordon_control.nodes.wheel_controller_node:main",
             "ultrasonic_controller = gordon_control.nodes.ultrasonic_controller_node:main",
-            "gate_controller = gordon_contol.nodes.gate_controller_node:main",
+            "gate_controller = gordon_control.nodes.gate_controller_node:main",
         ]
     },
     install_requires=["setuptools"],
