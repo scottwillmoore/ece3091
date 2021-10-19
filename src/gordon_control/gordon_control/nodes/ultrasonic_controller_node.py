@@ -2,7 +2,7 @@ from rclpy import init, shutdown, spin
 from rclpy.node import Node
 from rclpy.parameter import Parameter
 from rclpy.time import Time
-from sensor_msgs import Range
+from sensor_msgs.msg import Range
 
 from gordon_control.controllers.ultrasonic_controller import UltrasonicSensor
 
