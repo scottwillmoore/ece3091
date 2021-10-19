@@ -13,8 +13,8 @@ RIGHT_SENSOR_TRIGGER_PIN = 0"""
 def generate_launch_description():
     
     front_sensor_controller = Node(
-        package="gordon_ultrasonic",
-        executable="ultrasonic",
+        package="gordon_control",
+        executable="ultrasonic_controller",
         name="front_sensor_controller",
         remappings=[(range)],
         parameters=[ {
@@ -23,8 +23,8 @@ def generate_launch_description():
     )
 
     left_sensor_controller = Node(
-        package="gordon_ultrasonic",
-        executable="ultrasonic",
+        package="gordon_control",
+        executable="ultrasonic_controller",
         name="left_sensor_controller",
         remappings=[(range)],
         parameters=[{
