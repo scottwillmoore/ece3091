@@ -40,11 +40,11 @@
     <xacro:property name="wheel_y_offset" value="${wheel_separation / 2}" />
     <xacro:property name="wheel_z_offset" value="0.012" />
     
-    <xacro:property name="front_sensor_x_offset" value="0.0113"/>
+    <xacro:property name="front_sensor_x_offset" value="0.113"/>
     <xacro:property name="front_sensor_y_offset" value="0"/>
     <xacro:property name="front_sensor_z_offset" value="0.07"/>
 
-    <xacro:property name="left_sensor_x_offset" value="0.0102"/>
+    <xacro:property name="left_sensor_x_offset" value="0.102"/>
     <xacro:property name="left_sensor_y_offset" value="0.05"/>
     <xacro:property name="left_sensor_z_offset" value="0.038"/>
 
