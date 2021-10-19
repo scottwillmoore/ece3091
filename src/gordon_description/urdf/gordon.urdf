@@ -147,37 +147,37 @@
         <origin xyz="${gate_x_offset} 0 ${gate_z_offset}" rpy="0 0 0" />
         <axis xyz="0 1 0" />
     </joint>
+
+    <link name="sonar_front_link"/>
+        <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <box size="0.01 0.01 0.01"/>
+        </geometry>
+        </visual>
+    </link>
+
+    <joint name="sonar_front_joint" type="fixed"/>
+        <parent link="base_link"/>
+        <child link="sonar_front_link"/>
+        <origin rpy="0 0 0" xyz="${front_sensor_x_offset} {front_sensor_y_offset} {front_sensor_z_offset}" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+
+    <link name="sonar_left_link"/>
+        <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <box size="0.01 0.01 0.01"/>
+        </geometry>
+        </visual>
+    </link>
+
+    <joint name="sonar_left_joint" type="fixed"/>
+        <parent link="base_link"/>
+        <child link="sonar_left_link"/>
+        <origin rpy="0 0 0" xyz="${left_sensor_x_offset} {left_sensor_y_offset} {left_sensor_z_offset}" />  
+        <axis xyz="0 1 0" />
+    </joint>
 </robot>
-
-<link name="sonar_front_link"/>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.01 0.01 0.01"/>
-      </geometry>
-    </visual>
- </link>
-
-<joint name="sonar_front_joint" type="fixed"/>
-    <parent link="base_link"/>
-    <child link="sonar_front_link"/>
-    <origin rpy="0 0 0" xyz="${front_sensor_x_offset} {front_sensor_y_offset} {front_sensor_z_offset}" />
-    <axis xyz="0 1 0" />
-</joint>
-
-
-<link name="sonar_left_link"/>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.01 0.01 0.01"/>
-      </geometry>
-    </visual>
- </link>
-
-<joint name="sonar_left_joint" type="fixed"/>
-    <parent link="base_link"/>
-    <child link="sonar_left_link"/>
-    <origin rpy="0 0 0" xyz="${left_sensor_x_offset} {left_sensor_y_offset} {left_sensor_z_offset}" />  
-    <axis xyz="0 1 0" />
-</joint>
