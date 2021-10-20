@@ -6,25 +6,33 @@ from state_machine import StateMachine
 
 # not sure if this kind of structure will work, or if needs to be mulitple classes/functions/files
 
+# the print statements were for testing
+
 class Strategy:
 
     _goal_position_x: float
     _goal_position_y: float
+    _operate_gate: bool
     _obstacle: float
 
-    _velocity: float
+    _left_desired_velocity: float
+    _right_desired_velocity: float
 
-    # not sure if we will end up needing obstacle defined in class...
-    def __init__(self,goal_position_x: float, goal_position_y: float, obstacle: float)->None:
+    # somehow need all the information to come from the strategy node publishing/subscribing
+    def __init__(self,goal_position_x: float, goal_position_y: float, operate_gate: bool)->None:
         self._goal_position_x = goal_position_x
         self._goal_position_y = goal_position_y
-        self._obstacle = obstacle
+        self._operate_gate = operate_gate
+        # self._obstacle = obstacle
 
 
     def start_transitions(msg):
-    # subscribe to the coords from the camera
-    # if ball bearing is present
-        if :
+    # subscribe to the coords from the camera and check for ball bearing
+        ball_bearing = False
+        if self._goal_position_x != 10000 and self._goal_position_y = !10000: # use some dummy output coordinates from camera for no ball bearing
+            ball_bearing = True
+        
+        if ball_bearing is True:
             newState = "Drive_to_goal"
             print("drive 1")
         else:
@@ -33,11 +41,23 @@ class Strategy:
         return (newState, msg)
 
     def drive_to_goal_transitions(msg):
-    # publish wheel direction which is aligned to the coordinates
-    # publish a set velocity
-    # add obstacle avoidance later
-    # if get close to the ball bearing
-        if :
+        close = False
+        # first test the position of goal for ball bearing proximity
+        if 0<self._goal_position_x<1 and 2<self._goal_position_y<2: #untested, need to update values
+            close = True
+        # only drive if not close to ball bearing
+        if close is False:
+            #if self._goal_position_y > pixel 250
+                # direction to left
+            # if self._goal_position_y < pixel 250
+                # direction to right
+            # calculate the direction from camera, SAAD
+            velocity = 0.01 # set a velocity
+            direction = 1 # set the direction
+            sleep(5) # drive for x amount of time before rescanning
+        
+        # if get close to the ball bearing
+        if close is True:
             newState = "Get_close"
             print("close")
         else:
@@ -46,9 +66,11 @@ class Strategy:
         return (newState, msg)
 
     def get_close_transitions(msg):
-    # publish velocity as stop
-    # this will require testing to get it to stop in the right spot from camera
-    # publish gripper operation bool as true
+        velocity = 0.05 #continue driving straight for x time
+        sleep(2) # we need to travel about 4cm from when the ball bearing exits cameras frame. I assume also processing delays
+        velocity = 0 # stop (hopefully lined up with ball bearing)
+        operate_gate = True # publish the message to operate gate
+    
         newState = "End"
         print("to end")
         return (newState, msg)
@@ -59,11 +81,15 @@ class Strategy:
         return ("end_state", "")
 
     def scan_left_transitions(msg):
-    # publish the wheels to rotate left
-    # subscribe to coords from camera
-    # if ball bearing
-        msg = "scan left"
-        if :
+        # rotate to the left
+        self._left_desired_velocity = 0.001
+        self._right_resired_velocity = 0.01
+       
+        ball_bearing = False
+        if self._goal_position_x != 10000 and self._goal_position_y = !10000: # use some dummy output coordinates from camera for no ball bearing
+            ball_bearing = True
+        
+        if ball_bearing = True:
             newState = "Drive_to_goal"
             print("drive 2")
         else:
@@ -72,10 +98,14 @@ class Strategy:
         return (newState, msg)
 
     def scan_right_transitions(msg):
-    # publish the wheels to rotate right
-    # subscribe to coords from camera
-    # if ball bearing
-        if :
+        # rotate to the right
+        self._left_desired_velocity = 0.01
+        self._right_resired_velocity = 0.001
+       
+        ball_bearing = False
+        if self._goal_position_x != 10000 and self._goal_position_y = !10000: # use some dummy output coordinates from camera for no ball bearing
+            ball_bearing = True
+        if ball_bearing = True:
             newState = "Drive_to_goal"
             print("drive 3")
         else:
@@ -84,10 +114,14 @@ class Strategy:
         return (newState, msg)
 
     def drive_forwards_transitions(msg):
-    # publish the wheels to drive forwards a set amount
-    # subscribe to the coords from camera
-    # if ball bearing
-        if :
+        # drive forwards
+        self._left_desired_velocity = 0.01
+        self._right_resired_velocity = 0.01
+       
+        ball_bearing = False
+        if self._goal_position_x != 10000 and self._goal_position_y = !10000: # use some dummy output coordinates from camera for no ball bearing
+            ball_bearing = True
+        if ball_bearing is True:
             newState = "Drive_to_goal"
             print("drive 4")
         else:
