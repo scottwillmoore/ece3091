@@ -23,7 +23,8 @@ class GateControllerNode(Node):
         self._gate = Gate(left_servo_pin,right_servo_pin)
 
     def _listener_callback(self, message: Bool) -> None:
-        pass
+        if message.data is True: #untested
+            _gate.rotate() #untested
 
 def main(args=None):
   init(args=args)
