@@ -35,8 +35,8 @@ class StrategyNode(Node):
 
   # publish information to the wheels
   def _create_publishers(self) -> None:
-    self._wheel_controller_publisher = self._create_publishers(Twist, "wheel_controller", 10)
-    self._gate_controller_publisher = self._create_publishers(Bool, "gate_controller", 10)
+    self._wheel_controller_publisher = self.create_publisher(Twist, "wheel_controller", 10)
+    self._gate_controller_publisher = self.create_publisher(Bool, "gate_controller", 10)
 
   # subscribe to information from the US, camera, wheels
   def _create_subscriptions(self) -> None:
@@ -46,6 +46,7 @@ class StrategyNode(Node):
     self._front_ultrasonic_subscription = self.create_subscription(Range, "range", self._ultrasonic_callback, 10)
     self._left_ultrasonic_subscription = self.create_subscription(Range, "range", self._ultrasonic_callback, 10)
 
+  # not sure if we need to know the velocity
   def _left_velocity_callback(self, message: Float64) -> None:
     pass
 
