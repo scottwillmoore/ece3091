@@ -29,7 +29,7 @@ class Strategy:
     def start_transitions(msg):
     # subscribe to the coords from the camera and check for ball bearing
         ball_bearing = False
-        if self._goal_position_x != 10000 and self._goal_position_y = !10000: # use some dummy output coordinates from camera for no ball bearing
+        if self._goal_position_x != 10000 and self._goal_position_y != 10000: # use some dummy output coordinates from camera for no ball bearing
             ball_bearing = True
         
         if ball_bearing is True:
